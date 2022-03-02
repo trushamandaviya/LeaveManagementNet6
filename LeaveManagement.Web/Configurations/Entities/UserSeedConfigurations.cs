@@ -19,7 +19,7 @@ namespace LeaveManagement.Web.Configurations.Entities
                     NormalizedUserName ="ADMIN@LOCALHOST.COM",
                     Email = "admin@localhost.com",
                     NormalizedEmail = "ADMIN@LOCALHOST.COM",
-                    FristName = "System",
+                    FirstName = "System",
                     LastName = "Admin",
                     PasswordHash = hasher.HashPassword(null, "Admin@1"),
                     EmailConfirmed = true
@@ -31,7 +31,7 @@ namespace LeaveManagement.Web.Configurations.Entities
                     NormalizedUserName = "USER@LOCALHOST.COM",
                     Email = "user@localhost.com",
                     NormalizedEmail = "USER@LOCALHOST.COM",
-                    FristName = "System",
+                    FirstName = "System",
                     LastName = "User",
                     PasswordHash = hasher.HashPassword(null, "Admin@1"),
                     EmailConfirmed = true

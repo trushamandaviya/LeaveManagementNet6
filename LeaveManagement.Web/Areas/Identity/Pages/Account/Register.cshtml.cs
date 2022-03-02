@@ -134,7 +134,7 @@ namespace LeaveManagement.Web.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-                user.FristName = Input.FirstName;
+                user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
                 user.DateOfBirth = Input.DateOfBirth ?? default;
                 user.DateJoined = Input.DateJoined ?? default;
