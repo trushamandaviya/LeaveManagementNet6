@@ -14,13 +14,16 @@ namespace LeaveManagement.Web.Repositories
         private readonly UserManager<Employee> userManager;
         private readonly ILeaveTypeRepository leaveTypeRepository;
         private readonly IMapper mapper;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public LeaveAllocationRepository(ApplicationDbContext context, UserManager<Employee> userManager, ILeaveTypeRepository leaveTypeRepository, IMapper mapper) : base(context)
+        public LeaveAllocationRepository(ApplicationDbContext context, UserManager<Employee> userManager, ILeaveTypeRepository leaveTypeRepository, IMapper mapper,
+            IHttpContextAccessor httpContextAccessor) : base(context)
         {
             this.context = context;
             this.userManager = userManager;
             this.leaveTypeRepository = leaveTypeRepository;
             this.mapper = mapper;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<LeaveAllocationEditVM> GetEmployeeAllocation(int leaveAllocationId)
@@ -42,6 +45,17 @@ namespace LeaveManagement.Web.Repositories
             return model;
         }
 
+        public async Task<LeaveAllocation?> GetEmployeeAllocation(string employeeId, int leaveTypeId)
+        {
+            var allocation = await context.LeaveAllocations.FirstOrDefaultAsync(q => q.LeaveTypeId == leaveTypeId && q.EmployeeId == employeeId);
+
+            if (allocation == null)
+            {
+                return null;
+            }
+            return allocation;
+        }
+
         public async Task<EmployeeAllocationVM> GetEmployeeAllocations(string employeeId)
         {
             var employee = await userManager.FindByIdAsync(employeeId);
@@ -54,6 +68,17 @@ namespace LeaveManagement.Web.Repositories
 
             return employeeAllocationModel;
         }
+        public async Task<List<LeaveType>?> GetAllocatedLeaveTypesOfEmployee()
+        {
+            var user = await userManager.GetUserAsync(httpContextAccessor?.HttpContext?.User);
+
+            var leaveTypes = await context.LeaveAllocations
+                .Include(q => q.LeaveType)
+                .Where(q => q.EmployeeId == user.Id).Select(q => q.LeaveType).ToListAsync();
+            
+            return leaveTypes;
+        }
+
         public async Task LeaveAllocation(int leaveTypeId)
         {
             var employees = await userManager.GetUsersInRoleAsync(Roles.User);
