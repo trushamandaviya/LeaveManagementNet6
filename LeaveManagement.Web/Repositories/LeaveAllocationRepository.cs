@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using LeaveManagement.Web.Constants;
 using LeaveManagement.Web.Contracts;
 using LeaveManagement.Web.Data;
@@ -15,21 +16,23 @@ namespace LeaveManagement.Web.Repositories
         private readonly ILeaveTypeRepository leaveTypeRepository;
         private readonly IMapper mapper;
         private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly AutoMapper.IConfigurationProvider configurationProvider;
 
         public LeaveAllocationRepository(ApplicationDbContext context, UserManager<Employee> userManager, ILeaveTypeRepository leaveTypeRepository, IMapper mapper,
-            IHttpContextAccessor httpContextAccessor) : base(context)
+            IHttpContextAccessor httpContextAccessor, AutoMapper.IConfigurationProvider configurationProvider) : base(context)
         {
             this.context = context;
             this.userManager = userManager;
             this.leaveTypeRepository = leaveTypeRepository;
             this.mapper = mapper;
             this.httpContextAccessor = httpContextAccessor;
+            this.configurationProvider = configurationProvider;
         }
 
         public async Task<LeaveAllocationEditVM> GetEmployeeAllocation(int leaveAllocationId)
         {
             var allocation = await context.LeaveAllocations
-                .Include(q => q.LeaveType)
+                .Include(q => q.LeaveType)                
                 .FirstOrDefaultAsync(q => q.Id == leaveAllocationId);
 
             if(allocation == null)
@@ -61,6 +64,7 @@ namespace LeaveManagement.Web.Repositories
             var employee = await userManager.FindByIdAsync(employeeId);
             var allocatedLeaves = await context.LeaveAllocations
                 .Include(q => q.LeaveType)
+                .ProjectTo<LeaveAllocationVM>(configurationProvider)
                 .Where(q => q.EmployeeId == employeeId).ToListAsync();
 
             var employeeAllocationModel = mapper.Map<EmployeeAllocationVM>(employee);

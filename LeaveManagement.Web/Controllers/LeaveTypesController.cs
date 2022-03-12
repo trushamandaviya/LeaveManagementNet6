@@ -21,17 +21,20 @@ namespace LeaveManagement.Web.Controllers
         private readonly ILeaveTypeRepository leaveTypeRepository;
         private readonly IMapper mapper;
         private readonly ILeaveAllocationRepository leaveAllocationRepository;
+        private readonly ILogger<LeaveTypesController> logger;
 
-        public LeaveTypesController(ILeaveTypeRepository leaveTypeRepository, IMapper mapper, ILeaveAllocationRepository leaveAllocationRepository)
+        public LeaveTypesController(ILeaveTypeRepository leaveTypeRepository, IMapper mapper, ILeaveAllocationRepository leaveAllocationRepository, ILogger<LeaveTypesController> logger)
         {
             this.leaveTypeRepository = leaveTypeRepository;
             this.mapper = mapper;
             this.leaveAllocationRepository = leaveAllocationRepository;
+            this.logger = logger;
         }
 
         // GET: LeaveTypes
         public async Task<IActionResult> Index()
         {
+            throw new Exception("Exception test");
             var leaveTypes = mapper.Map<List<LeaveTypeVM>>(await leaveTypeRepository.GetAllAsync());
             return View(leaveTypes);
         }

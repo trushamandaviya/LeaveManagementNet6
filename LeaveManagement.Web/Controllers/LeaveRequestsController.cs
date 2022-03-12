@@ -19,11 +19,13 @@ namespace LeaveManagement.Web.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly ILeaveRequestRepository leaveRequestRepository;
+        private readonly ILogger<LeaveRequestsController> logger;
 
-        public LeaveRequestsController(ApplicationDbContext context,ILeaveRequestRepository leaveRequestRepository)
+        public LeaveRequestsController(ApplicationDbContext context,ILeaveRequestRepository leaveRequestRepository, ILogger<LeaveRequestsController> logger)
         {
             _context = context;
             this.leaveRequestRepository = leaveRequestRepository;
+            this.logger = logger;
         }
 
         // GET: LeaveRequests
@@ -98,10 +100,12 @@ namespace LeaveManagement.Web.Controllers
             var model = new LeaveRequestCreateVM();
             try
             {
+                logger.LogError("Error while creating leave");
                 model = await leaveRequestRepository.CreateLeaveRequest();                  
             }
             catch (Exception ex)
             {
+                logger.LogError("Error while creating leave");
                 ModelState.AddModelError(string.Empty, "Something went wrong, please try again later.");
             }
             
