@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using LeaveManagement.Data;
 using AutoMapper;
 using LeaveManagement.Common.Models;
-using LeaveManagement.Web.Contracts;
+using LeaveManagement.Application.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using LeaveManagement.Common.Constants;
 
@@ -34,7 +34,7 @@ namespace LeaveManagement.Web.Controllers
         // GET: LeaveTypes
         public async Task<IActionResult> Index()
         {
-            throw new Exception("Exception test");
+           // throw new Exception("Exception test");
             var leaveTypes = mapper.Map<List<LeaveTypeVM>>(await leaveTypeRepository.GetAllAsync());
             return View(leaveTypes);
         }

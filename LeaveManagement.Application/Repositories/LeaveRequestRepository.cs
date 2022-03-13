@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
-using LeaveManagement.Web.Contracts;
+using LeaveManagement.Application.Contracts;
 using LeaveManagement.Data;
 using LeaveManagement.Common.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 
-namespace LeaveManagement.Web.Repositories
+namespace LeaveManagement.Application.Repositories
 {
     public class LeaveRequestRepository : GenericRepository<LeaveRequest>, ILeaveRequestRepository
     {
