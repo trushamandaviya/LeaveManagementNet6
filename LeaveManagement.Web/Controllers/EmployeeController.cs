@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using LeaveManagement.Web.Constants;
+using LeaveManagement.Common.Constants;
 using LeaveManagement.Web.Contracts;
 using LeaveManagement.Data;
-using LeaveManagement.Web.Models;
+using LeaveManagement.Common.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
